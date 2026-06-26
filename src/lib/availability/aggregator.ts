@@ -1,6 +1,6 @@
 import type { AvailabilityProvider } from './providers/base'
-import type { SlotQuery, NormalizedSlot } from './types'
-import { SOURCE_PRIORITY, makeSlotKey } from './types'
+import type { SlotQuery, NormalizedSlot } from './types' // SlotQuery used in getSlots + resolveTimeWindow
+import { SOURCE_PRIORITY } from './types'
 import { supabase } from '@/lib/supabase/client'
 
 // Crowd reports younger than this override a slot's status
@@ -25,7 +25,7 @@ export class SlotAggregator {
     }
 
     const deduped = deduplicate(all)
-    return applyCrowdReports(deduped, query)
+    return applyCrowdReports(deduped)
   }
 }
 
@@ -56,10 +56,7 @@ function deduplicate(slots: NormalizedSlot[]): NormalizedSlot[] {
  * Overlay recent crowd reports onto deduped slots.
  * A report < 30 min old for a court/venue updates the matching slot's status.
  */
-async function applyCrowdReports(
-  slots: NormalizedSlot[],
-  query: SlotQuery
-): Promise<NormalizedSlot[]> {
+async function applyCrowdReports(slots: NormalizedSlot[]): Promise<NormalizedSlot[]> {
   if (slots.length === 0) return slots
 
   const cutoff = new Date(Date.now() - CROWD_REPORT_TTL_MS).toISOString()
