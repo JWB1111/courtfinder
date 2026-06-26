@@ -54,14 +54,14 @@ export function VenueCard({ venue, href = `/venue/${venue.id}` }: Props) {
               </span>
             )}
           </div>
-          <h3 className="mt-1.5 truncate font-semibold text-ink-900 transition-colors group-hover:text-brand-700">
+          <h3 className="font-display mt-1.5 truncate text-lg font-semibold tracking-tight text-ink-900 transition-colors group-hover:text-brand-700">
             {venue.name}
           </h3>
           <p className="truncate text-sm text-ink-500">{venue.address}</p>
         </div>
 
         {venue.distance_km !== null && (
-          <span className="shrink-0 rounded-md bg-ink-50 px-2 py-0.5 text-xs font-medium text-ink-500">
+          <span className="shrink-0 rounded-md bg-ink-50 px-2 py-0.5 text-xs font-medium text-ink-500 tabular-nums">
             {formatDistance(venue.distance_km)}
           </span>
         )}

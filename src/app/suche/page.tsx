@@ -16,7 +16,9 @@ export default async function SearchPage() {
         >
           ← Startseite
         </Link>
-        <h1 className="text-2xl font-bold tracking-tight text-ink-900">Plätze & Angebote</h1>
+        <h1 className="font-display text-3xl font-bold tracking-tight text-ink-900">
+          Plätze & Angebote
+        </h1>
         <p className="text-sm text-ink-500">Verfügbarkeit in Aachen – heute</p>
       </header>
       <VenueListWrapper venues={venues} />

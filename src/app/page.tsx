@@ -93,7 +93,7 @@ export default function Home() {
             <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
             Jetzt für Aachen
           </span>
-          <h1 className="animate-fade-up mt-5 text-4xl font-bold tracking-tight text-ink-900 sm:text-5xl">
+          <h1 className="animate-fade-up font-display mt-5 text-5xl font-bold tracking-tight text-ink-900 uppercase sm:text-7xl">
             Freie Plätze finden —{' '}
             <span className="text-brand-600">sofort.</span>
           </h1>
@@ -121,7 +121,9 @@ export default function Home() {
       {/* Sport entry cards */}
       <section className="mx-auto max-w-5xl px-4 py-14">
         <div className="mb-6 flex items-end justify-between">
-          <h2 className="text-xl font-semibold tracking-tight text-ink-900">Wonach suchst du?</h2>
+          <h2 className="font-display text-2xl font-bold tracking-tight text-ink-900">
+            Wonach suchst du?
+          </h2>
           <Link href="/suche" className="text-sm font-medium text-brand-600 hover:text-brand-700">
             Alle anzeigen →
           </Link>
@@ -136,7 +138,9 @@ export default function Home() {
               <span className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl ${s.iconBg}`}>
                 {s.icon}
               </span>
-              <span className="text-lg font-semibold text-ink-900">{s.label}</span>
+              <span className="font-display text-xl font-bold tracking-tight text-ink-900">
+                {s.label}
+              </span>
               <span className="mt-1 text-sm text-ink-500">{s.desc}</span>
               <span className={`mt-4 text-sm font-medium ${s.accent}`}>Ansehen →</span>
             </Link>
@@ -153,7 +157,9 @@ export default function Home() {
                 <span className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-brand-50 text-brand-700">
                   {f.icon}
                 </span>
-                <h3 className="text-base font-semibold text-ink-900">{f.title}</h3>
+                <h3 className="font-display text-lg font-semibold tracking-tight text-ink-900">
+                  {f.title}
+                </h3>
                 <p className="mt-1 text-sm text-ink-500">{f.desc}</p>
               </div>
             ))}
@@ -164,7 +170,9 @@ export default function Home() {
       {/* CTA strip */}
       <section className="mx-auto max-w-5xl px-4 py-14">
         <div className="rounded-2xl bg-ink-900 px-6 py-10 text-center sm:px-12">
-          <h2 className="text-2xl font-bold tracking-tight text-white">Bereit zu spielen?</h2>
+          <h2 className="font-display text-3xl font-bold tracking-tight text-white uppercase">
+            Bereit zu spielen?
+          </h2>
           <p className="mx-auto mt-2 max-w-md text-sm text-ink-300">
             Finde jetzt einen freien Platz – ganz ohne Anmeldung.
           </p>

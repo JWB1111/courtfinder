@@ -63,12 +63,12 @@ function CourtSlotRow({ slot }: { slot: NormalizedSlot }) {
 
   return (
     <div className="flex items-center justify-between px-4 py-2.5">
-      <span className="text-sm font-medium text-ink-700">
+      <span className="text-sm font-medium text-ink-700 tabular-nums">
         {formatTime(slot.start_time)} – {formatTime(slot.end_time)}
       </span>
       <div className="flex items-center gap-3">
         {formatPrice(slot.price_cents) && (
-          <span className="text-xs text-ink-400">{formatPrice(slot.price_cents)}</span>
+          <span className="text-xs text-ink-400 tabular-nums">{formatPrice(slot.price_cents)}</span>
         )}
         <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${statusStyle}`}>
           {statusLabel}
@@ -158,7 +158,9 @@ export default async function VenueDetailPage({
             </span>
           )}
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-ink-900">{venue.name}</h1>
+        <h1 className="font-display text-3xl font-bold tracking-tight text-ink-900">
+          {venue.name}
+        </h1>
         <p className="text-ink-500">{venue.address}</p>
         {(venue.phone || venue.website) && (
           <div className="flex flex-wrap gap-4 pt-1 text-sm">
@@ -180,7 +182,9 @@ export default async function VenueDetailPage({
       {/* Gym offers */}
       {isGym && (
         <section className="space-y-3 rounded-2xl border border-ink-200 bg-white p-5 shadow-sm">
-          <h2 className="text-lg font-semibold text-ink-900">Tagesangebote</h2>
+          <h2 className="font-display text-xl font-bold tracking-tight text-ink-900">
+            Tagesangebote
+          </h2>
           {gym_offers.length === 0 ? (
             <p className="text-sm text-ink-400">Keine Tagesangebote bekannt.</p>
           ) : (
@@ -212,7 +216,9 @@ export default async function VenueDetailPage({
       {/* Slot availability for tennis / padel */}
       {!isGym && (
         <section className="space-y-4 rounded-2xl border border-ink-200 bg-white p-5 shadow-sm">
-          <h2 className="text-lg font-semibold text-ink-900">Verfügbarkeit</h2>
+          <h2 className="font-display text-xl font-bold tracking-tight text-ink-900">
+            Verfügbarkeit
+          </h2>
           <TimeFilter current={timeOfDay} venueId={venue.id} />
           {slots.length === 0 ? (
             <div className="rounded-xl border border-dashed border-ink-200 py-10 text-center">

@@ -38,7 +38,7 @@ export default async function AdminNewSlotPage() {
       </Link>
 
       <div className="space-y-1">
-        <h1 className="text-xl font-bold tracking-tight text-ink-900">Slot anlegen</h1>
+        <h1 className="font-display text-2xl font-bold tracking-tight text-ink-900">Slot anlegen</h1>
         <p className="text-sm text-ink-500">Intern – Zeitslot manuell in die Datenbank eintragen.</p>
       </div>
 

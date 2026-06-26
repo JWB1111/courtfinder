@@ -11,7 +11,9 @@ export function Header() {
               <path d="M5 5a13 13 0 0 1 0 14M19 5a13 13 0 0 0 0 14" />
             </svg>
           </span>
-          <span className="text-base font-bold tracking-tight text-ink-900">CourtFinder</span>
+          <span className="font-display text-xl font-bold tracking-tight text-ink-900">
+            CourtFinder
+          </span>
         </Link>
 
         <Link
