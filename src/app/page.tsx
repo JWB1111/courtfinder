@@ -1,13 +1,18 @@
-export default function Home() {
+import { getEnrichedVenues } from '@/lib/data/venues'
+import { VenueListWrapper } from '@/components/VenueListWrapper'
+import { resolveTimeWindow } from '@/lib/availability/aggregator'
+
+export default async function Home() {
+  const { from, to } = resolveTimeWindow('today')
+  const venues = await getEnrichedVenues({ from, to })
+
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-4 p-8">
-      <h1 className="text-4xl font-bold tracking-tight text-gray-900">CourtFinder</h1>
-      <p className="text-lg text-gray-600">
-        Freie Tennis- &amp; Padelplätze in Aachen – coming soon.
-      </p>
-      <span className="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800">
-        Phase 0 ✓
-      </span>
+    <main className="mx-auto max-w-5xl px-4 py-6">
+      <header className="mb-6">
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900">CourtFinder</h1>
+        <p className="text-sm text-gray-500">Freie Plätze & Gym-Angebote in Aachen</p>
+      </header>
+      <VenueListWrapper venues={venues} />
     </main>
   )
 }
