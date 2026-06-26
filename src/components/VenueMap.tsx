@@ -17,19 +17,28 @@ const TYPE_COLOR: Record<string, string> = {
   gym: '#9333ea', // purple-600
 }
 
-function markerEl(venue: EnrichedVenue): HTMLDivElement {
-  const el = document.createElement('div')
+// MapLibre positions the marker by setting `transform` on the element we pass.
+// To scale on hover without interfering, we use an outer wrapper (MapLibre owns
+// the transform) and an inner circle (we own the scale).
+function markerEl(venue: EnrichedVenue): { outer: HTMLDivElement; inner: HTMLDivElement } {
+  const outer = document.createElement('div')
+  outer.style.cssText = 'width: 28px; height: 28px; cursor: pointer;'
+  outer.title = venue.name
+
+  const inner = document.createElement('div')
   const color = TYPE_COLOR[venue.type] ?? '#6b7280'
   const hasFree = venue.has_free_slots
-  el.style.cssText = `
+  inner.style.cssText = `
     width: 28px; height: 28px; border-radius: 50%;
     background: ${color}; border: 3px solid white;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     cursor: pointer; transition: transform .15s;
-    ${hasFree ? `box-shadow: 0 0 0 3px ${color}44, 0 2px 6px rgba(0,0,0,0.3);` : ''}
+    ${hasFree
+      ? `box-shadow: 0 0 0 3px ${color}44, 0 2px 6px rgba(0,0,0,0.3);`
+      : `box-shadow: 0 2px 6px rgba(0,0,0,0.3);`
+    }
   `
-  el.title = venue.name
-  return el
+  outer.appendChild(inner)
+  return { outer, inner }
 }
 
 function popupHtml(venue: EnrichedVenue): string {
@@ -138,18 +147,18 @@ export function VenueMap({ venues, userLat, userLng }: Props) {
       popupRef.current = popup
 
       venues.forEach((venue) => {
-        const el = markerEl(venue)
-        const marker = new Marker({ element: el })
+        const { outer, inner } = markerEl(venue)
+        const marker = new Marker({ element: outer })
           .setLngLat([venue.lng, venue.lat])
           .addTo(map)
 
-        el.addEventListener('mouseenter', () => {
-          el.style.transform = 'scale(1.2)'
+        outer.addEventListener('mouseenter', () => {
+          inner.style.transform = 'scale(1.2)'
         })
-        el.addEventListener('mouseleave', () => {
-          el.style.transform = 'scale(1)'
+        outer.addEventListener('mouseleave', () => {
+          inner.style.transform = 'scale(1)'
         })
-        el.addEventListener('click', (e) => {
+        outer.addEventListener('click', (e) => {
           e.stopPropagation()
           popup.setLngLat([venue.lng, venue.lat]).setHTML(popupHtml(venue)).addTo(map)
         })

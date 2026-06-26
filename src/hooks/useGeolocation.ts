@@ -12,20 +12,23 @@ interface GeoState {
 }
 
 export function useGeolocation(): GeoState {
-  // Lazy initializer avoids synchronous setState inside effect
-  const [state, setState] = useState<GeoState>(() => {
-    const supported = typeof navigator !== 'undefined' && Boolean(navigator.geolocation)
-    return {
-      lat: AACHEN_CENTER.lat,
-      lng: AACHEN_CENTER.lng,
-      loading: supported,
-      error: supported ? null : 'Geolocation nicht verfügbar',
-      isActualLocation: false,
-    }
+  // Always start with loading:false so server and client render identical HTML.
+  // useEffect runs after hydration and handles the browser-only geolocation API.
+  const [state, setState] = useState<GeoState>({
+    lat: AACHEN_CENTER.lat,
+    lng: AACHEN_CENTER.lng,
+    loading: false,
+    error: null,
+    isActualLocation: false,
   })
 
   useEffect(() => {
-    if (!navigator.geolocation) return
+    if (!navigator.geolocation) {
+      setState((s) => ({ ...s, error: 'Geolocation nicht verfügbar' }))
+      return
+    }
+
+    setState((s) => ({ ...s, loading: true }))
 
     navigator.geolocation.getCurrentPosition(
       (pos) => {
