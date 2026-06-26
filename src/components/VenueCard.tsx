@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import type { EnrichedVenue } from '@/types/enriched'
 
 const TYPE_LABEL: Record<string, string> = {
@@ -19,7 +20,7 @@ interface Props {
 
 export function VenueCard({ venue, href = `/venue/${venue.id}` }: Props) {
   return (
-    <a
+    <Link
       href={href}
       className="block rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition hover:shadow-md"
     >
@@ -86,6 +87,6 @@ export function VenueCard({ venue, href = `/venue/${venue.id}` }: Props) {
           )}
         </div>
       )}
-    </a>
+    </Link>
   )
 }
