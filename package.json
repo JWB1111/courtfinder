@@ -13,7 +13,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
-    "typecheck": "node node_modules/typescript/bin/tsc --noEmit"
+    "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
+    "seed": "node node_modules/tsx/dist/cli.mjs seed/run.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.2",
@@ -31,6 +32,7 @@
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^4.7.0",
     "@vitest/coverage-v8": "^4.1.9",
+    "date-fns": "^4.4.0",
     "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
@@ -38,6 +40,7 @@
     "prettier": "^3.8.5",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4",
+    "tsx": "^4.22.4",
     "typescript": "^5.9.3",
     "vitest": "^4.1.9"
   }
