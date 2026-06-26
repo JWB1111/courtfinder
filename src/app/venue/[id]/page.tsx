@@ -231,6 +231,8 @@ export default async function VenueDetailPage({
               ))}
             </div>
           )}
+
+          <p className="text-right text-xs text-gray-400">Angaben ohne Gewähr.</p>
         </section>
       )}
 

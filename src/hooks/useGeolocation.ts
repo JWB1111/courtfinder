@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { AACHEN_CENTER } from '@/lib/filter/distance'
 
 interface GeoState {
@@ -11,9 +11,16 @@ interface GeoState {
   isActualLocation: boolean
 }
 
-export function useGeolocation(): GeoState {
-  // Always start with loading:false so server and client render identical HTML.
-  // useEffect runs after hydration and handles the browser-only geolocation API.
+export interface GeoResult extends GeoState {
+  /** Call this after the user explicitly consents to share their location. */
+  requestLocation: () => void
+}
+
+export function useGeolocation(): GeoResult {
+  // Always start with the city centre so server and client render identically.
+  // Location is only fetched when the user explicitly calls requestLocation().
+  // Coordinates live exclusively in React state – never written to
+  // localStorage, sessionStorage, or any persistent store.
   const [state, setState] = useState<GeoState>({
     lat: AACHEN_CENTER.lat,
     lng: AACHEN_CENTER.lng,
@@ -22,14 +29,12 @@ export function useGeolocation(): GeoState {
     isActualLocation: false,
   })
 
-  useEffect(() => {
-    if (!navigator.geolocation) {
-      setState((s) => ({ ...s, error: 'Geolocation nicht verfügbar' }))
+  const requestLocation = useCallback(() => {
+    if (typeof navigator === 'undefined' || !navigator.geolocation) {
+      setState((s) => ({ ...s, error: 'Standortdienste nicht verfügbar', loading: false }))
       return
     }
-
-    setState((s) => ({ ...s, loading: true }))
-
+    setState((s) => ({ ...s, loading: true, error: null }))
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setState({
@@ -41,16 +46,11 @@ export function useGeolocation(): GeoState {
         })
       },
       () => {
-        // Fallback to city center silently
-        setState((s) => ({
-          ...s,
-          loading: false,
-          isActualLocation: false,
-        }))
+        setState((s) => ({ ...s, loading: false, isActualLocation: false }))
       },
-      { timeout: 5000, maximumAge: 60_000 }
+      { timeout: 8000, maximumAge: 120_000 }
     )
   }, [])
 
-  return state
+  return { ...state, requestLocation }
 }

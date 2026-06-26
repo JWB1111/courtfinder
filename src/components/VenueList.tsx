@@ -49,14 +49,22 @@ export function VenueList({ venues }: Props) {
         onReset={resetFilter}
       />
 
-      {/* Location indicator */}
-      {!geo.loading && (
-        <p className="text-xs text-gray-400">
-          {geo.isActualLocation
-            ? 'Standort erkannt – Entfernungen berechnet'
-            : 'Kein Standort – Entfernungen ab Aachen-Mitte'}
-        </p>
-      )}
+      {/* Location consent – only requested on explicit user action */}
+      <div className="flex items-center gap-3">
+        {geo.isActualLocation ? (
+          <p className="text-xs text-gray-400">Entfernungen ab deinem Standort</p>
+        ) : geo.loading ? (
+          <p className="text-xs text-gray-400">Standort wird ermittelt…</p>
+        ) : (
+          <button
+            onClick={geo.requestLocation}
+            className="text-xs text-blue-600 hover:underline"
+            title="Standortdaten werden nicht gespeichert und nur für diese Sitzung verwendet"
+          >
+            Standort für Entfernungen aktivieren
+          </button>
+        )}
+      </div>
 
       {/* Tab toggle + results count */}
       <div className="flex items-center justify-between">
@@ -106,6 +114,11 @@ export function VenueList({ venues }: Props) {
           ))}
         </div>
       )}
+
+      {/* Availability disclaimer */}
+      <p className="text-xs text-gray-400 text-right">
+        Alle Verfügbarkeitsangaben ohne Gewähr.
+      </p>
     </div>
   )
 }
