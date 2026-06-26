@@ -26,9 +26,16 @@ export async function submitCrowdReport(
       reported_at: new Date().toISOString(),
       trust_score: 1,
     })
-    if (error) return { ok: false, error: error.message }
+    if (error) {
+      // RLS-/Constraint-Fehler nicht verschlucken: serverseitig loggen
+      // und die konkrete Meldung ans UI durchreichen.
+      console.error('[submitCrowdReport] insert failed:', error)
+      return { ok: false, error: error.message }
+    }
     return { ok: true }
-  } catch {
-    return { ok: false, error: 'Unbekannter Fehler' }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unbekannter Fehler'
+    console.error('[submitCrowdReport] unexpected error:', err)
+    return { ok: false, error: message }
   }
 }

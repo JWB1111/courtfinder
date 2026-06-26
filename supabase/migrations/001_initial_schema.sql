@@ -104,22 +104,29 @@ ALTER TABLE gym_offers   ENABLE ROW LEVEL SECURITY;
 ALTER TABLE crowd_reports ENABLE ROW LEVEL SECURITY;
 
 -- Public read for all tables
+-- (DROP … IF EXISTS macht das Skript idempotent – CREATE POLICY kennt kein IF NOT EXISTS)
+DROP POLICY IF EXISTS "public_read_venues"        ON venues;
 CREATE POLICY "public_read_venues"
   ON venues FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "public_read_courts"        ON courts;
 CREATE POLICY "public_read_courts"
   ON courts FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "public_read_slots"         ON slots;
 CREATE POLICY "public_read_slots"
   ON slots FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "public_read_gym_offers"    ON gym_offers;
 CREATE POLICY "public_read_gym_offers"
   ON gym_offers FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "public_read_crowd_reports" ON crowd_reports;
 CREATE POLICY "public_read_crowd_reports"
   ON crowd_reports FOR SELECT USING (true);
 
 -- Anyone can submit a crowd report (no auth required in MVP)
+DROP POLICY IF EXISTS "public_insert_crowd_reports" ON crowd_reports;
 CREATE POLICY "public_insert_crowd_reports"
   ON crowd_reports FOR INSERT WITH CHECK (true);
 

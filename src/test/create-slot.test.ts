@@ -1,39 +1,86 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+
+// createSlot now always writes to Supabase via the service-role client.
+// We mock the DB client and next/cache so the unit test never touches a
+// real database or the Next runtime.
+
+const insertedRows: unknown[] = []
+
+vi.mock('next/cache', () => ({ revalidatePath: () => {} }))
+
+vi.mock('@/lib/supabase/server', () => ({
+  createServerClient: () => ({
+    from: () => ({
+      insert: (row: unknown) => {
+        insertedRows.push(row)
+        return {
+          select: () => ({
+            single: async () => ({ data: { id: 'd1000000-0000-4000-8000-000000000abc' }, error: null }),
+          }),
+        }
+      },
+    }),
+  }),
+}))
+
 import { createSlot } from '@/actions/create-slot'
 
-// createSlot runs as a server action – in test mode IS_MOCK=true so it
-// should always return an explanatory error rather than touching the DB.
-
-function makeFormData(fields: Record<string, string>): FormData {
-  const fd = new FormData()
-  for (const [key, value] of Object.entries(fields)) {
-    fd.set(key, value)
-  }
-  return fd
+function fd(fields: Record<string, string>): FormData {
+  const f = new FormData()
+  for (const [k, v] of Object.entries(fields)) f.set(k, v)
+  return f
 }
 
-const TODAY = new Date().toISOString().slice(0, 10) // "YYYY-MM-DD"
+const TODAY = new Date().toISOString().slice(0, 10)
 
-describe('createSlot – mock mode', () => {
-  it('returns ok:false with a helpful message in mock mode', async () => {
-    const fd = makeFormData({
-      venue_id: 'a1000000-0000-4000-8000-000000000001',
-      date: TODAY,
-      start_time: '09:00',
-      end_time: '10:00',
-      status: 'frei',
-    })
-    const result = await createSlot(fd)
+describe('createSlot', () => {
+  beforeEach(() => {
+    insertedRows.length = 0
+  })
+
+  it('rejects missing date/time without touching the DB', async () => {
+    const result = await createSlot(fd({ court_id: 'c1000000-0000-4000-8000-000000000001', status: 'frei' }))
     expect(result.ok).toBe(false)
-    expect(result.error).toMatch(/mock/i)
+    expect(insertedRows).toHaveLength(0)
+  })
+
+  it('rejects end_time before start_time', async () => {
+    const result = await createSlot(
+      fd({
+        court_id: 'c1000000-0000-4000-8000-000000000001',
+        date: TODAY,
+        start_time: '10:00',
+        end_time: '09:00',
+        status: 'frei',
+      })
+    )
+    expect(result.ok).toBe(false)
+    expect(insertedRows).toHaveLength(0)
+  })
+
+  it('inserts a valid slot and returns ok', async () => {
+    const result = await createSlot(
+      fd({
+        court_id: 'c1000000-0000-4000-8000-000000000001',
+        venue_id: 'a1000000-0000-4000-8000-000000000001',
+        date: TODAY,
+        start_time: '09:00',
+        end_time: '10:00',
+        status: 'frei',
+        price_eur: '12.00',
+      })
+    )
+    expect(result.ok).toBe(true)
+    expect(result.id).toBeTruthy()
+    expect(insertedRows).toHaveLength(1)
+    expect(insertedRows[0]).toMatchObject({ status: 'frei', price_cents: 1200, source: 'own' })
   })
 })
 
-// Validate the underlying SlotInputSchema used by createSlot
-// (production path not reachable in tests, but we verify schema correctness)
+// SlotInputSchema validation (pure)
 import { SlotInputSchema } from '@/types/schemas'
 
-describe('SlotInputSchema – used by createSlot', () => {
+describe('SlotInputSchema', () => {
   const base = {
     court_id: 'c1000000-0000-4000-8000-000000000001',
     venue_id: null,
@@ -48,18 +95,18 @@ describe('SlotInputSchema – used by createSlot', () => {
     expect(SlotInputSchema.safeParse(base).success).toBe(true)
   })
 
-  it('rejects end_time before start_time', () => {
-    const result = SlotInputSchema.safeParse({
-      ...base,
-      start_time: `${TODAY}T10:00:00.000Z`,
-      end_time: `${TODAY}T09:00:00.000Z`,
-    })
-    expect(result.success).toBe(false)
+  it('rejects end before start', () => {
+    expect(
+      SlotInputSchema.safeParse({
+        ...base,
+        start_time: `${TODAY}T10:00:00.000Z`,
+        end_time: `${TODAY}T09:00:00.000Z`,
+      }).success
+    ).toBe(false)
   })
 
   it('rejects when both court_id and venue_id are null', () => {
-    const result = SlotInputSchema.safeParse({ ...base, court_id: null, venue_id: null })
-    expect(result.success).toBe(false)
+    expect(SlotInputSchema.safeParse({ ...base, court_id: null, venue_id: null }).success).toBe(false)
   })
 
   it('accepts null price_cents', () => {

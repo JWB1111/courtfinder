@@ -1,5 +1,6 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
 import { SlotInputSchema } from '@/types/schemas'
 
 export interface CreateSlotResult {
@@ -8,11 +9,9 @@ export interface CreateSlotResult {
   id?: string
 }
 
+// Always writes to Supabase via the service-role client – this is the admin
+// tool used to populate real availability, regardless of NEXT_PUBLIC_IS_MOCK.
 export async function createSlot(formData: FormData): Promise<CreateSlotResult> {
-  if (process.env.NEXT_PUBLIC_IS_MOCK === 'true') {
-    return { ok: false, error: 'Im Mock-Modus nicht verfügbar – setze NEXT_PUBLIC_IS_MOCK=false.' }
-  }
-
   const date = (formData.get('date') as string | null)?.trim()
   const startTimeRaw = (formData.get('start_time') as string | null)?.trim()
   const endTimeRaw = (formData.get('end_time') as string | null)?.trim()
@@ -62,6 +61,9 @@ export async function createSlot(formData: FormData): Promise<CreateSlotResult> 
       .single()
 
     if (error) return { ok: false, error: error.message }
+
+    if (venueId) revalidatePath(`/venue/${venueId}`)
+    revalidatePath('/suche')
     return { ok: true, id: data.id }
   } catch {
     return { ok: false, error: 'Datenbankfehler.' }
