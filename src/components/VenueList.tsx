@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import type { EnrichedVenue } from '@/types/enriched'
 import type { VenueFilter } from '@/types/schemas'
 import type { SortOrder } from '@/types/enriched'
@@ -8,8 +8,11 @@ import { filterAndSort } from '@/lib/filter/venue-filter'
 import { withDistances } from '@/lib/filter/venue-filter'
 import { VenueCard } from './VenueCard'
 import { FilterBar } from './FilterBar'
+import { VenueMap } from './VenueMap'
 import { useVenueFilter } from '@/hooks/useVenueFilter'
 import { useGeolocation } from '@/hooks/useGeolocation'
+
+type ViewTab = 'list' | 'map'
 
 interface Props {
   venues: EnrichedVenue[]
@@ -18,6 +21,7 @@ interface Props {
 export function VenueList({ venues }: Props) {
   const { filter, sort, setFilter, setSort, toggleType, resetFilter } = useVenueFilter()
   const geo = useGeolocation()
+  const [activeTab, setActiveTab] = useState<ViewTab>('list')
 
   // Re-compute distances with real user location once available
   const venuesWithDist = useMemo(() => {
@@ -54,13 +58,38 @@ export function VenueList({ venues }: Props) {
         </p>
       )}
 
-      {/* Results count */}
-      <p className="text-sm font-medium text-gray-700">
-        {filtered.length} {filtered.length === 1 ? 'Ergebnis' : 'Ergebnisse'}
-      </p>
+      {/* Tab toggle + results count */}
+      <div className="flex items-center justify-between">
+        <p className="text-sm font-medium text-gray-700">
+          {filtered.length} {filtered.length === 1 ? 'Ergebnis' : 'Ergebnisse'}
+        </p>
 
-      {/* List */}
-      {filtered.length === 0 ? (
+        <div className="flex overflow-hidden rounded-lg border border-gray-200">
+          {(['list', 'map'] as ViewTab[]).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={[
+                'px-4 py-1.5 text-sm font-medium transition-colors',
+                activeTab === tab
+                  ? 'bg-gray-900 text-white'
+                  : 'bg-white text-gray-600 hover:bg-gray-50',
+              ].join(' ')}
+            >
+              {tab === 'list' ? 'Liste' : 'Karte'}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Content */}
+      {activeTab === 'map' ? (
+        <VenueMap
+          venues={filtered}
+          userLat={geo.isActualLocation ? geo.lat : undefined}
+          userLng={geo.isActualLocation ? geo.lng : undefined}
+        />
+      ) : filtered.length === 0 ? (
         <div className="rounded-xl border border-dashed border-gray-200 py-12 text-center">
           <p className="text-gray-500">Keine Venues gefunden.</p>
           <button
