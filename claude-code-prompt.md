@@ -62,6 +62,7 @@ Die Verfügbarkeitsdaten kommen aus **mehreren Quellen** mit klarer Priorität. 
 ## MVP-Funktionsumfang (Phase-Ziel)
 
 **Im MVP enthalten:**
+
 - Karten- **und** Listenansicht von Venues in **[DEINE STADT]**
 - Filter: Sportart (Tennis/Padel/Gym), **Tageszeit/Zeitfenster** (heute, jetzt, heute Abend, Datum+Uhrzeit), Umkreis/Standort, „nur freie Plätze", Hallenplatz/Outdoor, Preis
 - **Gym-Filter:** „bietet Tageskarte", „bietet kostenloses Probetraining"
@@ -71,6 +72,7 @@ Die Verfügbarkeitsdaten kommen aus **mehreren Quellen** mit klarer Priorität. 
 - Responsives Design (mobile-first, da spätere App)
 
 **Bewusst NICHT im MVP (nur Schema/Architektur vorbereiten):**
+
 - Nutzerkonten/Login
 - QR-Code-Tageskarten & Gym-Kooperationsabwicklung
 - Echte Buchung/Bezahlung
@@ -79,25 +81,25 @@ Die Verfügbarkeitsdaten kommen aus **mehreren Quellen** mit klarer Priorität. 
 ## Phasenplan (jeweils mit Stopp + Zwischentest)
 
 **Phase 0 – Setup & Gerüst**
-Next.js + TS + Tailwind + ESLint/Prettier, Supabase-Projekt anlegen, Env-Konfiguration, leeres Deploy auf Vercel. → *Zwischentest:* App startet lokal, „Hello CourtFinder"-Seite live, Lint grün.
+Next.js + TS + Tailwind + ESLint/Prettier, Supabase-Projekt anlegen, Env-Konfiguration, leeres Deploy auf Vercel. → _Zwischentest:_ App startet lokal, „Hello CourtFinder"-Seite live, Lint grün.
 
 **Phase 1 – Datenmodell & Seed**
-Supabase-Tabellen + RLS-Policies (vorerst nur Lesen öffentlich), Zod-Schemas, Seed-Skript mit klar markierten Mock-Venues/Courts/Slots/Gym-Angeboten für **[DEINE STADT]**. → *Zwischentest:* Seed läuft, Daten per Supabase-Query abrufbar, Schema-Validierung getestet.
+Supabase-Tabellen + RLS-Policies (vorerst nur Lesen öffentlich), Zod-Schemas, Seed-Skript mit klar markierten Mock-Venues/Courts/Slots/Gym-Angeboten für **[DEINE STADT]**. → _Zwischentest:_ Seed läuft, Daten per Supabase-Query abrufbar, Schema-Validierung getestet.
 
 **Phase 2 – Provider-/Adapter-Layer**
-Einheitliches `AvailabilityProvider`-Interface; Implementierungen: `MockProvider`, `OwnSlotsProvider` (liest eigene DB-Slots), Stubs für `IntegrationProvider` & `ClubWebsiteScraperProvider`. Aggregations-/Dedupe-Logik. → *Zwischentest:* Unit-Tests für Aggregation/Dedupe/Zeitfilter, ein End-to-End-Aufruf liefert kombinierte Slots.
+Einheitliches `AvailabilityProvider`-Interface; Implementierungen: `MockProvider`, `OwnSlotsProvider` (liest eigene DB-Slots), Stubs für `IntegrationProvider` & `ClubWebsiteScraperProvider`. Aggregations-/Dedupe-Logik. → _Zwischentest:_ Unit-Tests für Aggregation/Dedupe/Zeitfilter, ein End-to-End-Aufruf liefert kombinierte Slots.
 
 **Phase 3 – Listenansicht & Filter**
-Venue-Liste mit allen Filtern (Sportart, Tageszeit, Umkreis, „nur frei", Gym-Tageskarte/Probetraining). → *Zwischentest:* Filter-Logik unit-getestet; manueller Smoke-Test: Filter ändern → Liste aktualisiert korrekt.
+Venue-Liste mit allen Filtern (Sportart, Tageszeit, Umkreis, „nur frei", Gym-Tageskarte/Probetraining). → _Zwischentest:_ Filter-Logik unit-getestet; manueller Smoke-Test: Filter ändern → Liste aktualisiert korrekt.
 
 **Phase 4 – Kartenansicht**
-MapLibre/Leaflet-Karte mit Markern, Klick → Venue-Vorschau, Sync mit Filtern, Geolocation. → *Zwischentest:* Karte rendert Marker aus gefilterten Daten; Geolocation-Fallback funktioniert.
+MapLibre/Leaflet-Karte mit Markern, Klick → Venue-Vorschau, Sync mit Filtern, Geolocation. → _Zwischentest:_ Karte rendert Marker aus gefilterten Daten; Geolocation-Fallback funktioniert.
 
 **Phase 5 – Venue-Detailseite**
-Slots/Verfügbarkeit nach Tageszeit, Gym-Angebote, Crowd-Report-Button (schreibt in DB). → *Zwischentest:* Detailseite zeigt korrekte Slots; Crowd-Report schreibt Eintrag; E2E-Happy-Path mit Playwright grün.
+Slots/Verfügbarkeit nach Tageszeit, Gym-Angebote, Crowd-Report-Button (schreibt in DB). → _Zwischentest:_ Detailseite zeigt korrekte Slots; Crowd-Report schreibt Eintrag; E2E-Happy-Path mit Playwright grün.
 
 **Phase 6 – Polish, internes Slot-Eingabeformular, Deploy**
-Internes Formular zum Pflegen eigener Slots, leere Zustände/Fehlerzustände, Loading-States, finales Deploy. → *Zwischentest:* Vollständiger E2E-Durchlauf (Start → Filter → Karte → Detail → Report) grün auf Production-URL.
+Internes Formular zum Pflegen eigener Slots, leere Zustände/Fehlerzustände, Loading-States, finales Deploy. → _Zwischentest:_ Vollständiger E2E-Durchlauf (Start → Filter → Karte → Detail → Report) grün auf Production-URL.
 
 ## Definition of Done pro Phase
 
