@@ -1,23 +1,22 @@
 # Impressum
 
-> **Hinweis:** Diese Seite befindet sich im Aufbau. Bitte ersetze alle Platzhalter durch deine echten Angaben, bevor du den Dienst öffentlich zugänglich machst. Die vollständigen Pflichtangaben nach § 5 TMG sind zwingend erforderlich.
-
 ## Angaben gemäß § 5 TMG
 
-**[Vor- und Nachname bzw. Firmenname]**  
-[Straße und Hausnummer]  
-[PLZ Ort]  
+**Julius Wolf**  
+Boxgraben 128  
+52064 Aachen  
 Deutschland
 
 ## Kontakt
 
-E-Mail: [deine@email.de]  
-Telefon: [+49 ...]
+E-Mail: julius.wolf@rwth-aachen.de  
+Telefon: +49 160 1297227
 
 ## Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
 
-[Vor- und Nachname]  
-[Anschrift wie oben]
+Julius Wolf  
+Boxgraben 128  
+52064 Aachen
 
 ## Haftungsausschluss
 

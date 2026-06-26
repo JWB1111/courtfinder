@@ -6,9 +6,9 @@ CourtFinder nimmt den Schutz deiner persönlichen Daten ernst. Diese Erklärung 
 
 ## Verantwortliche Stelle
 
-[Name / Firmenname]  
-[Adresse]  
-E-Mail: [kontakt@email.de]
+Julius Wolf  
+Boxgraben 128, 52064 Aachen  
+E-Mail: julius.wolf@rwth-aachen.de
 
 ## Erhobene Daten
 
@@ -56,4 +56,4 @@ Wir setzen **keine** Analyse- oder Werbe-Cookies ein. Es gibt kein Google Analyt
 
 Du hast das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung deiner Daten (Art. 15–18 DSGVO) sowie das Recht auf Datenübertragbarkeit (Art. 20 DSGVO). Beschwerden können bei der zuständigen Aufsichtsbehörde eingereicht werden.
 
-Anfragen: [kontakt@email.de]
+Anfragen: julius.wolf@rwth-aachen.de
