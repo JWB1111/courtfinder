@@ -38,9 +38,9 @@ function surfaceLabel(surface: string | null): string | null {
 }
 
 const TYPE_BADGE_STYLE: Record<string, string> = {
-  tennis: 'bg-green-100 text-green-800',
-  padel: 'bg-blue-100 text-blue-800',
-  gym: 'bg-purple-100 text-purple-800',
+  tennis: 'bg-brand-50 text-brand-700',
+  padel: 'bg-sky-50 text-sky-700',
+  gym: 'bg-violet-50 text-violet-700',
 }
 
 const TYPE_LABEL: Record<string, string> = {
@@ -54,21 +54,21 @@ const TYPE_LABEL: Record<string, string> = {
 function CourtSlotRow({ slot }: { slot: NormalizedSlot }) {
   const statusStyle =
     slot.status === 'frei'
-      ? 'bg-green-100 text-green-800'
+      ? 'bg-brand-50 text-brand-700'
       : slot.status === 'belegt'
-        ? 'bg-red-100 text-red-700'
-        : 'bg-gray-100 text-gray-500'
+        ? 'bg-red-50 text-red-700'
+        : 'bg-ink-100 text-ink-500'
   const statusLabel =
     slot.status === 'frei' ? 'Frei' : slot.status === 'belegt' ? 'Belegt' : 'Unbekannt'
 
   return (
     <div className="flex items-center justify-between px-4 py-2.5">
-      <span className="text-sm text-gray-700">
+      <span className="text-sm font-medium text-ink-700">
         {formatTime(slot.start_time)} – {formatTime(slot.end_time)}
       </span>
       <div className="flex items-center gap-3">
         {formatPrice(slot.price_cents) && (
-          <span className="text-xs text-gray-400">{formatPrice(slot.price_cents)}</span>
+          <span className="text-xs text-ink-400">{formatPrice(slot.price_cents)}</span>
         )}
         <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${statusStyle}`}>
           {statusLabel}
@@ -84,15 +84,15 @@ function CourtCard({ court, slots }: { court: Court; slots: NormalizedSlot[] }) 
     .join(' · ')
 
   return (
-    <div className="overflow-hidden rounded-xl border border-gray-200">
-      <div className="flex items-center justify-between border-b border-gray-100 bg-gray-50 px-4 py-2.5">
-        <span className="font-medium text-gray-900">{court.name}</span>
-        {meta && <span className="text-xs text-gray-400">{meta}</span>}
+    <div className="overflow-hidden rounded-xl border border-ink-200 bg-white">
+      <div className="flex items-center justify-between border-b border-ink-100 bg-ink-50 px-4 py-2.5">
+        <span className="font-semibold text-ink-900">{court.name}</span>
+        {meta && <span className="text-xs text-ink-400">{meta}</span>}
       </div>
       {slots.length === 0 ? (
-        <div className="px-4 py-3 text-sm text-gray-400">Keine Daten für dieses Zeitfenster</div>
+        <div className="px-4 py-3 text-sm text-ink-400">Keine Daten für dieses Zeitfenster</div>
       ) : (
-        <div className="divide-y divide-gray-100">
+        <div className="divide-y divide-ink-100">
           {slots.map((slot) => (
             <CourtSlotRow key={slot.key} slot={slot} />
           ))}
@@ -135,40 +135,40 @@ export default async function VenueDetailPage({
   const hasIndoor = courts.some((c) => c.indoor)
 
   return (
-    <main className="mx-auto max-w-3xl space-y-6 px-4 py-6">
+    <main className="mx-auto w-full max-w-3xl flex-1 space-y-5 px-4 py-6">
       {/* Back */}
       <Link
-        href="/"
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900"
+        href="/suche"
+        className="inline-flex items-center gap-1 text-sm text-ink-400 hover:text-ink-700"
       >
         ← Zurück zur Übersicht
       </Link>
 
-      {/* Header */}
-      <div className="space-y-2">
+      {/* Header card */}
+      <div className="space-y-2 rounded-2xl border border-ink-200 bg-white p-5 shadow-sm">
         <div className="flex flex-wrap items-center gap-2">
           <span
-            className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${TYPE_BADGE_STYLE[venue.type] ?? 'bg-gray-100 text-gray-600'}`}
+            className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${TYPE_BADGE_STYLE[venue.type] ?? 'bg-ink-100 text-ink-600'}`}
           >
             {TYPE_LABEL[venue.type] ?? venue.type}
           </span>
           {hasIndoor && (
-            <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+            <span className="rounded-full bg-ink-100 px-2.5 py-0.5 text-xs font-medium text-ink-600">
               Halle verfügbar
             </span>
           )}
         </div>
-        <h1 className="text-2xl font-bold text-gray-900">{venue.name}</h1>
-        <p className="text-gray-500">{venue.address}</p>
+        <h1 className="text-2xl font-bold tracking-tight text-ink-900">{venue.name}</h1>
+        <p className="text-ink-500">{venue.address}</p>
         {(venue.phone || venue.website) && (
-          <div className="flex flex-wrap gap-4 text-sm">
-            {venue.phone && <span className="text-gray-500">{venue.phone}</span>}
+          <div className="flex flex-wrap gap-4 pt-1 text-sm">
+            {venue.phone && <span className="text-ink-500">{venue.phone}</span>}
             {venue.website && (
               <a
                 href={venue.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
+                className="font-medium text-brand-600 hover:text-brand-700 hover:underline"
               >
                 Website →
               </a>
@@ -179,14 +179,14 @@ export default async function VenueDetailPage({
 
       {/* Gym offers */}
       {isGym && (
-        <section className="space-y-3">
-          <h2 className="text-lg font-semibold text-gray-900">Tagesangebote</h2>
+        <section className="space-y-3 rounded-2xl border border-ink-200 bg-white p-5 shadow-sm">
+          <h2 className="text-lg font-semibold text-ink-900">Tagesangebote</h2>
           {gym_offers.length === 0 ? (
-            <p className="text-sm text-gray-400">Keine Tagesangebote bekannt.</p>
+            <p className="text-sm text-ink-400">Keine Tagesangebote bekannt.</p>
           ) : (
             <div className="grid gap-3 sm:grid-cols-2">
               {gym_offers.map((offer) => (
-                <div key={offer.id} className="space-y-2 rounded-xl border border-gray-200 p-4">
+                <div key={offer.id} className="space-y-2 rounded-xl border border-ink-200 p-4">
                   <div className="flex items-center justify-between">
                     <span
                       className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
@@ -197,13 +197,11 @@ export default async function VenueDetailPage({
                     >
                       {offer.type === 'tageskarte' ? 'Tageskarte' : 'Probetraining'}
                     </span>
-                    <span className="text-sm font-semibold text-gray-900">
+                    <span className="text-sm font-semibold text-ink-900">
                       {formatPrice(offer.price_cents) ?? '–'}
                     </span>
                   </div>
-                  {offer.conditions && (
-                    <p className="text-sm text-gray-500">{offer.conditions}</p>
-                  )}
+                  {offer.conditions && <p className="text-sm text-ink-500">{offer.conditions}</p>}
                 </div>
               ))}
             </div>
@@ -213,33 +211,29 @@ export default async function VenueDetailPage({
 
       {/* Slot availability for tennis / padel */}
       {!isGym && (
-        <section className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">Verfügbarkeit</h2>
+        <section className="space-y-4 rounded-2xl border border-ink-200 bg-white p-5 shadow-sm">
+          <h2 className="text-lg font-semibold text-ink-900">Verfügbarkeit</h2>
           <TimeFilter current={timeOfDay} venueId={venue.id} />
           {slots.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-gray-200 py-10 text-center">
-              <p className="text-gray-500">Keine Daten für dieses Zeitfenster.</p>
+            <div className="rounded-xl border border-dashed border-ink-200 py-10 text-center">
+              <p className="text-ink-500">Keine Daten für dieses Zeitfenster.</p>
             </div>
           ) : (
             <div className="space-y-3">
               {courts.map((court) => (
-                <CourtCard
-                  key={court.id}
-                  court={court}
-                  slots={slotsByCourt.get(court.id) ?? []}
-                />
+                <CourtCard key={court.id} court={court} slots={slotsByCourt.get(court.id) ?? []} />
               ))}
             </div>
           )}
 
-          <p className="text-right text-xs text-gray-400">Angaben ohne Gewähr.</p>
+          <p className="text-right text-xs text-ink-400">Angaben ohne Gewähr.</p>
         </section>
       )}
 
       {/* Crowd report */}
-      <section className="space-y-2 rounded-xl border border-gray-200 p-4">
-        <h2 className="text-sm font-semibold text-gray-700">Aktuellen Status melden</h2>
-        <p className="text-xs text-gray-400">
+      <section className="space-y-2 rounded-2xl border border-ink-200 bg-white p-5 shadow-sm">
+        <h2 className="text-sm font-semibold text-ink-700">Aktuellen Status melden</h2>
+        <p className="text-xs text-ink-400">
           Etwas stimmt nicht? Hilf anderen mit einer Echtzeit-Meldung.
         </p>
         <CrowdReportButton venueId={venue.id} />

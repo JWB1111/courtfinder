@@ -12,10 +12,10 @@ interface Props {
   onReset: () => void
 }
 
-const TYPES: Array<{ value: VenueFilter['types'][number]; label: string }> = [
-  { value: 'tennis', label: 'Tennis' },
-  { value: 'padel', label: 'Padel' },
-  { value: 'gym', label: 'Gym' },
+const TYPES: Array<{ value: VenueFilter['types'][number]; label: string; active: string }> = [
+  { value: 'tennis', label: 'Tennis', active: 'bg-brand-600 text-white border-brand-600' },
+  { value: 'padel', label: 'Padel', active: 'bg-sky-600 text-white border-sky-600' },
+  { value: 'gym', label: 'Gym', active: 'bg-violet-600 text-white border-violet-600' },
 ]
 
 const RADII: number[] = [2, 5, 10, 20, 50]
@@ -26,15 +26,18 @@ const SORT_OPTIONS: Array<{ value: SortOrder; label: string }> = [
   { value: 'name', label: 'Name' },
 ]
 
+const SELECT_CLASS =
+  'rounded-lg border border-ink-200 bg-white px-2.5 py-1.5 text-sm text-ink-700 transition-colors hover:border-ink-300 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20'
+
 export function FilterBar({ filter, sort, onToggleType, onSetFilter, onSetSort, onReset }: Props) {
   const showGym = filter.types.length === 0 || filter.types.includes('gym')
   const showCourt = filter.types.length === 0 || filter.types.some((t) => t !== 'gym')
 
   return (
-    <div className="space-y-3 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+    <div className="space-y-4 rounded-2xl border border-ink-200 bg-white p-4 shadow-sm sm:p-5">
       {/* Sport type */}
       <div>
-        <p className="mb-2 text-xs font-semibold tracking-wide text-gray-500 uppercase">Sportart</p>
+        <p className="mb-2 text-xs font-semibold tracking-wide text-ink-400 uppercase">Sportart</p>
         <div className="flex flex-wrap gap-2">
           {TYPES.map((t) => {
             const active = filter.types.includes(t.value)
@@ -42,10 +45,10 @@ export function FilterBar({ filter, sort, onToggleType, onSetFilter, onSetSort, 
               <button
                 key={t.value}
                 onClick={() => onToggleType(t.value)}
-                className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
+                className={`rounded-full border px-4 py-1.5 text-sm font-medium transition ${
                   active
-                    ? 'bg-gray-900 text-white'
-                    : 'border border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
+                    ? t.active
+                    : 'border-ink-200 bg-white text-ink-700 hover:border-ink-300 hover:bg-ink-50'
                 }`}
               >
                 {t.label}
@@ -63,7 +66,7 @@ export function FilterBar({ filter, sort, onToggleType, onSetFilter, onSetSort, 
               label="Nur freie Plätze"
               active={filter.onlyFree}
               onChange={(v) => onSetFilter({ onlyFree: v })}
-              activeClass="bg-green-600 text-white"
+              activeClass="border-brand-600 bg-brand-600 text-white"
             />
             <Toggle
               label="Hallenplatz"
@@ -78,28 +81,28 @@ export function FilterBar({ filter, sort, onToggleType, onSetFilter, onSetSort, 
               label="Tageskarte"
               active={filter.hasTageskarte}
               onChange={(v) => onSetFilter({ hasTageskarte: v })}
-              activeClass="bg-orange-500 text-white"
+              activeClass="border-orange-500 bg-orange-500 text-white"
             />
             <Toggle
               label="Probetraining"
               active={filter.hasProbetraining}
               onChange={(v) => onSetFilter({ hasProbetraining: v })}
-              activeClass="bg-teal-600 text-white"
+              activeClass="border-teal-600 bg-teal-600 text-white"
             />
           </>
         )}
       </div>
 
-      {/* Radius + Sort */}
-      <div className="flex flex-wrap items-center gap-4">
+      {/* Radius + Sort + Reset */}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-3 border-t border-ink-100 pt-4">
         <div className="flex items-center gap-2">
-          <label className="text-xs font-semibold tracking-wide text-gray-500 uppercase">
+          <label className="text-xs font-semibold tracking-wide text-ink-400 uppercase">
             Umkreis
           </label>
           <select
             value={filter.radiusKm}
             onChange={(e) => onSetFilter({ radiusKm: Number(e.target.value) })}
-            className="rounded-lg border border-gray-200 px-2 py-1 text-sm"
+            className={SELECT_CLASS}
           >
             {RADII.map((r) => (
               <option key={r} value={r}>
@@ -110,13 +113,13 @@ export function FilterBar({ filter, sort, onToggleType, onSetFilter, onSetSort, 
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-xs font-semibold tracking-wide text-gray-500 uppercase">
+          <label className="text-xs font-semibold tracking-wide text-ink-400 uppercase">
             Sortierung
           </label>
           <select
             value={sort}
             onChange={(e) => onSetSort(e.target.value as SortOrder)}
-            className="rounded-lg border border-gray-200 px-2 py-1 text-sm"
+            className={SELECT_CLASS}
           >
             {SORT_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
@@ -128,9 +131,9 @@ export function FilterBar({ filter, sort, onToggleType, onSetFilter, onSetSort, 
 
         <button
           onClick={onReset}
-          className="ml-auto text-sm text-gray-400 underline-offset-2 hover:text-gray-600 hover:underline"
+          className="ml-auto text-sm font-medium text-ink-400 underline-offset-2 transition-colors hover:text-ink-600 hover:underline"
         >
-          Filter zurücksetzen
+          Zurücksetzen
         </button>
       </div>
     </div>
@@ -141,7 +144,7 @@ function Toggle({
   label,
   active,
   onChange,
-  activeClass = 'bg-gray-900 text-white',
+  activeClass = 'border-ink-900 bg-ink-900 text-white',
 }: {
   label: string
   active: boolean
@@ -151,8 +154,8 @@ function Toggle({
   return (
     <button
       onClick={() => onChange(!active)}
-      className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
-        active ? activeClass : 'border border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
+      className={`rounded-full border px-4 py-1.5 text-sm font-medium transition ${
+        active ? activeClass : 'border-ink-200 bg-white text-ink-700 hover:border-ink-300 hover:bg-ink-50'
       }`}
     >
       {label}

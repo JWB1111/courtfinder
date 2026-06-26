@@ -12,9 +12,9 @@ interface Props {
 }
 
 const TYPE_COLOR: Record<string, string> = {
-  tennis: '#16a34a', // green-600
-  padel: '#2563eb', // blue-600
-  gym: '#9333ea', // purple-600
+  tennis: '#059669', // brand/emerald-600
+  padel: '#0284c7', // sky-600
+  gym: '#7c3aed', // violet-600
 }
 
 // MapLibre positions the marker by setting `transform` on the element we pass.
@@ -53,7 +53,7 @@ function popupHtml(venue: EnrichedVenue): string {
   const badge =
     venue.type !== 'gym'
       ? venue.has_free_slots
-        ? `<span style="color:#16a34a;font-weight:600">● ${venue.free_slots_count} frei</span>`
+        ? `<span style="color:#059669;font-weight:600">● ${venue.free_slots_count} frei</span>`
         : '<span style="color:#9ca3af">Keine freien Plätze</span>'
       : [
           venue.has_tageskarte ? '<span style="color:#ea580c">Tageskarte</span>' : '',
@@ -186,16 +186,16 @@ export function VenueMap({ venues, userLat, userLng }: Props) {
   }, [mapReady, updateMarkers])
 
   return (
-    <div className="relative h-[500px] w-full overflow-hidden rounded-xl border border-gray-200">
+    <div className="relative h-[500px] w-full overflow-hidden rounded-2xl border border-ink-200">
       <div ref={containerRef} className="h-full w-full" />
       {!mapReady && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
-          <p className="text-sm text-gray-400">Karte lädt…</p>
+        <div className="absolute inset-0 flex items-center justify-center bg-ink-50">
+          <p className="text-sm text-ink-400">Karte lädt…</p>
         </div>
       )}
       {venues.length === 0 && mapReady && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="rounded-lg bg-white/90 px-4 py-2 shadow text-sm text-gray-500">
+          <div className="rounded-lg bg-white/90 px-4 py-2 text-sm text-ink-500 shadow">
             Keine Venues gefunden
           </div>
         </div>

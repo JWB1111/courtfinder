@@ -49,7 +49,7 @@ export function NewSlotForm({ venues, courts, isMock }: Props) {
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* Venue */}
       <div className="space-y-1">
-        <label htmlFor="venue_id" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="venue_id" className="block text-sm font-medium text-ink-700">
           Venue <span className="text-red-500">*</span>
         </label>
         <select
@@ -58,7 +58,7 @@ export function NewSlotForm({ venues, courts, isMock }: Props) {
           required
           value={selectedVenueId}
           onChange={(e) => setSelectedVenueId(e.target.value)}
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+          className="w-full rounded-lg border border-ink-200 px-3 py-2 text-sm transition-colors hover:border-ink-300 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
         >
           <option value="">– Venue wählen –</option>
           {venues.map((v) => (
@@ -72,13 +72,13 @@ export function NewSlotForm({ venues, courts, isMock }: Props) {
       {/* Court (optional, shown when venue has courts) */}
       {venueCourts.length > 0 && (
         <div className="space-y-1">
-          <label htmlFor="court_id" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="court_id" className="block text-sm font-medium text-ink-700">
             Platz
           </label>
           <select
             id="court_id"
             name="court_id"
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="w-full rounded-lg border border-ink-200 px-3 py-2 text-sm transition-colors hover:border-ink-300 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
           >
             <option value="">– Kein spezifischer Platz –</option>
             {venueCourts.map((c) => (
@@ -92,7 +92,7 @@ export function NewSlotForm({ venues, courts, isMock }: Props) {
 
       {/* Date */}
       <div className="space-y-1">
-        <label htmlFor="date" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="date" className="block text-sm font-medium text-ink-700">
           Datum <span className="text-red-500">*</span>
         </label>
         <input
@@ -101,14 +101,14 @@ export function NewSlotForm({ venues, courts, isMock }: Props) {
           type="date"
           required
           defaultValue={new Date().toISOString().slice(0, 10)}
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+          className="w-full rounded-lg border border-ink-200 px-3 py-2 text-sm transition-colors hover:border-ink-300 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
         />
       </div>
 
       {/* Times */}
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-1">
-          <label htmlFor="start_time" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="start_time" className="block text-sm font-medium text-ink-700">
             Startzeit (UTC) <span className="text-red-500">*</span>
           </label>
           <input
@@ -116,11 +116,11 @@ export function NewSlotForm({ venues, courts, isMock }: Props) {
             name="start_time"
             type="time"
             required
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="w-full rounded-lg border border-ink-200 px-3 py-2 text-sm transition-colors hover:border-ink-300 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
           />
         </div>
         <div className="space-y-1">
-          <label htmlFor="end_time" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="end_time" className="block text-sm font-medium text-ink-700">
             Endzeit (UTC) <span className="text-red-500">*</span>
           </label>
           <input
@@ -128,7 +128,7 @@ export function NewSlotForm({ venues, courts, isMock }: Props) {
             name="end_time"
             type="time"
             required
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="w-full rounded-lg border border-ink-200 px-3 py-2 text-sm transition-colors hover:border-ink-300 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
           />
         </div>
       </div>
@@ -136,7 +136,7 @@ export function NewSlotForm({ venues, courts, isMock }: Props) {
       {/* Status + Price */}
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-1">
-          <label htmlFor="status" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="status" className="block text-sm font-medium text-ink-700">
             Status <span className="text-red-500">*</span>
           </label>
           <select
@@ -144,7 +144,7 @@ export function NewSlotForm({ venues, courts, isMock }: Props) {
             name="status"
             required
             defaultValue="frei"
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="w-full rounded-lg border border-ink-200 px-3 py-2 text-sm transition-colors hover:border-ink-300 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
           >
             <option value="frei">Frei</option>
             <option value="belegt">Belegt</option>
@@ -152,7 +152,7 @@ export function NewSlotForm({ venues, courts, isMock }: Props) {
           </select>
         </div>
         <div className="space-y-1">
-          <label htmlFor="price_eur" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="price_eur" className="block text-sm font-medium text-ink-700">
             Preis (EUR)
           </label>
           <input
@@ -162,7 +162,7 @@ export function NewSlotForm({ venues, courts, isMock }: Props) {
             min="0"
             step="0.01"
             placeholder="z.B. 12.00"
-            className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="w-full rounded-lg border border-ink-200 px-3 py-2 text-sm transition-colors hover:border-ink-300 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
           />
         </div>
       </div>
@@ -171,7 +171,7 @@ export function NewSlotForm({ venues, courts, isMock }: Props) {
       <button
         type="submit"
         disabled={isPending || !selectedVenueId}
-        className="w-full rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50 transition-colors"
+        className="w-full rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-50"
       >
         {isPending ? 'Wird gespeichert…' : 'Slot anlegen'}
       </button>

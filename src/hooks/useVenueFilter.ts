@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import type { VenueFilter } from '@/types/schemas'
 import type { SortOrder } from '@/types/enriched'
 
@@ -48,6 +48,7 @@ function filterToParams(filter: Partial<VenueFilter>): URLSearchParams {
 
 export function useVenueFilter() {
   const router = useRouter()
+  const pathname = usePathname()
   const params = useSearchParams()
   const filter = parseFilter(params)
   const sort: SortOrder = (params.get('sort') as SortOrder) ?? 'distance'
@@ -80,8 +81,8 @@ export function useVenueFilter() {
   )
 
   const resetFilter = useCallback(() => {
-    router.replace('/', { scroll: false })
-  }, [router])
+    router.replace(pathname, { scroll: false })
+  }, [router, pathname])
 
   return { filter, sort, setFilter, setSort, toggleType, resetFilter }
 }

@@ -1,6 +1,6 @@
 'use client'
 
-export default function HomeError({
+export default function SearchError({
   error,
   unstable_retry,
 }: {
@@ -8,7 +8,7 @@ export default function HomeError({
   unstable_retry: () => void
 }) {
   return (
-    <main className="mx-auto max-w-5xl px-4 py-6">
+    <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6">
       <div className="rounded-xl border border-red-100 bg-red-50 px-6 py-10 text-center space-y-4">
         <p className="font-medium text-red-700">Fehler beim Laden der Venues.</p>
         {process.env.NODE_ENV === 'development' && (

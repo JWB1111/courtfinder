@@ -32,19 +32,17 @@ export default async function AdminNewSlotPage() {
   const { venues, courts } = await getAdminData()
 
   return (
-    <main className="mx-auto max-w-xl space-y-6 px-4 py-6">
-      <Link href="/" className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900">
+    <main className="mx-auto w-full max-w-xl flex-1 space-y-5 px-4 py-6">
+      <Link href="/" className="inline-flex items-center gap-1 text-sm text-ink-400 hover:text-ink-700">
         ← Zurück zur App
       </Link>
 
       <div className="space-y-1">
-        <h1 className="text-xl font-bold text-gray-900">Slot anlegen</h1>
-        <p className="text-sm text-gray-500">
-          Intern – Zeitslot manuell in die Datenbank eintragen.
-        </p>
+        <h1 className="text-xl font-bold tracking-tight text-ink-900">Slot anlegen</h1>
+        <p className="text-sm text-ink-500">Intern – Zeitslot manuell in die Datenbank eintragen.</p>
       </div>
 
-      <div className="rounded-xl border border-gray-200 p-6">
+      <div className="rounded-2xl border border-ink-200 bg-white p-6 shadow-sm">
         <NewSlotForm venues={venues} courts={courts} isMock={IS_MOCK} />
       </div>
     </main>
