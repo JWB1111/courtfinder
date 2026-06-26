@@ -123,7 +123,9 @@ describe('SlotAggregator – deduplication', () => {
     const failing: AvailabilityProvider = {
       name: 'bad',
       enabled: true,
-      getSlots: async () => { throw new Error('network error') },
+      getSlots: async () => {
+        throw new Error('network error')
+      },
     }
     const slot = makeSlot()
     const agg = new SlotAggregator([failing, stubProvider([slot])])

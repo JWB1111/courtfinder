@@ -95,7 +95,11 @@ async function applyCrowdReports(slots: NormalizedSlot[]): Promise<NormalizedSlo
     if (!id) return slot
     const override = latestReport.get(id)
     if (!override || override === slot.status) return slot
-    return { ...slot, status: override as NormalizedSlot['status'], provider: `${slot.provider}+crowd` }
+    return {
+      ...slot,
+      status: override as NormalizedSlot['status'],
+      provider: `${slot.provider}+crowd`,
+    }
   })
 }
 
